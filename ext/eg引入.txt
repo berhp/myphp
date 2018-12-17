@@ -1,0 +1,29 @@
+<?php 
+ require "./ext/xx.class.php";
+
+//方式一
+$d => new \ext\xxx;
+$d->fun();
+
+//方式二 来自第三方扩展的 静态类
+$d = \ext\xxx::fun();
+
+
+?>
+
+
+//★特殊情况,若第三方含有自定义自动加载类,则应该如下
+<?php 
+
+C('is_spl_autoload_registerOther', true);  //★临时配置参数：是否队列继续加载第三方的自动加载类(true-可以 false-不可以),默认 false,当MyPHP框架+项目内类文件不存在,则终止了,若使用第三方类,需要临时配置此参数为true
+
+require "./ext/xx.class.php";
+
+//方式一
+$d => new \ext\xxx;
+$d->fun();
+
+//方式二 来自第三方扩展的 静态类
+$d = \ext\xxx::fun();
+
+?>

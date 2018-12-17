@@ -1,0 +1,97 @@
+1. 这里的文件来自网络下载：
+@link https://github.com/PHPMailer/PHPMailer
+
+class.phpmailer.php
+class.smtp.php
+
+
+2. 使用例子：
+<?php 
+set_time_limit(0);
+require_once 'Tools/email/class.phpmailer.php';
+require_once 'Tools/email/class.smtp.php';
+$mail = new \PHPMailer(); //实例化
+
+$mail->IsSMTP(); // 启用SMTP
+
+//$mail->Host = "smtp.163.com"; //SMTP服务器 163邮箱例子
+//$mail->Host = "smtp.126.com"; //SMTP服务器 126邮箱例子
+$mail->Host = "smtp.qq.com"; //SMTP服务器 qq邮箱例子
+
+$mail->Port = 465;  //邮件发送端口
+$mail->SMTPAuth   = true;  //启用SMTP认证
+$mail->SMTPSecure='ssl';
+
+$mail->CharSet  = "UTF-8"; //字符集
+$mail->Encoding = "base64"; //编码方式
+
+
+/*
+'EMAIL_FROM_NAME'        => '343217456@qq.com',   // 发件人
+'EMAIL_SMTP'             => 'smtp.qq.com',   	  // smtp
+'EMAIL_USERNAME'         => '343217456@qq.com',   // 账号
+'EMAIL_PASSWORD'         => 'vyaolecttfombgef',   // 密码  注意: 163和QQ邮箱是授权码；不是登录的密码
+'EMAIL_SMTP_SECURE'      => 'ssl',   			  // 链接方式 如果使用QQ邮箱；需要把此项改为  ssl
+'EMAIL_PORT'             => '465', 	  			  // 端口 如果使用QQ邮箱；需要把此项改为  465
+*/
+
+$mail->Username = "343217456@qq.com";  //你的邮箱
+$mail->Password = "vyaolecttfombgef";  //你的密码
+$mail->Subject = "xxx你好"; //邮件标题
+
+$mail->From = "343217456@qq.com";  //发件人地址（也就是你的邮箱）
+$mail->FromName = "xxx1";   //发件人姓名
+
+$address = "2881589017@qq.com";//收件人email
+$mail->AddAddress($address, "xxx2");    //添加收件人（地址，昵称）
+$mail->AddAttachment('index.html','index2.html'); // 添加附件,并指定名称
+$mail->AddAttachment('demo.sql');	//附件2
+$mail->AddAttachment('m_xiaochefu.rar'); 	//附件3
+
+$mail->IsHTML(true); //支持html格式内容
+$mail->AddEmbeddedImage("favicon.ico", "my-attach", "favicon.ico"); //设置邮件中的图片
+$mail->Body = '你好, <b>朋友</b>! <br/>这是一封邮件！'; //邮件主体内容
+
+//发送
+if(!$mail->Send()) {
+	echo "发送失败: " . $mail->ErrorInfo;
+} else {
+	echo "成功";
+}
+?>
+
+
+
+
+3. 常见的Email服务器信息
+
+sina.com:   
+POP3服务器地址:pop3.sina.com.cn（端口：110） SMTP服务器地址:smtp.sina.com.cn（端口：25）
+     
+sinaVIP：   
+POP3服务器:pop3.vip.sina.com （端口：110） SMTP服务器:smtp.vip.sina.com （端口：25）
+    
+sohu.com:   
+POP3服务器地址:pop3.sohu.com（端口：110） SMTP服务器地址:smtp.sohu.com（端口：25）
+    
+126邮箱：   
+POP3服务器地址:pop.126.com（端口：110） SMTP服务器地址:smtp.126.com（端口：25）
+    
+139邮箱：   
+POP3服务器地址：POP.139.com（端口：110） SMTP服务器地址：SMTP.139.com(端口：25)
+    
+163.com:   
+POP3服务器地址:pop.163.com（端口：110） SMTP服务器地址:smtp.163.com（端口：25）
+    
+QQ邮箱    
+POP3服务器地址：pop.qq.com（端口：110）   
+SMTP服务器地址：smtp.qq.com （端口：25）
+    
+QQ企业邮箱   
+POP3服务器地址：pop.exmail.qq.com （SSL启用 端口：995） SMTP服务器地址：smtp.exmail.qq.com（SSL启用 端口：587/465）
+    
+yahoo.com:   
+POP3服务器地址:pop.mail.yahoo.com SMTP服务器地址:smtp.mail.yahoo.com
+    
+yahoo.com.cn:   
+POP3服务器地址:pop.mail.yahoo.com.cn（端口：995） SMTP服务器地址:smtp.mail.yahoo.com.cn（端口：587)  

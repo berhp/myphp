@@ -1,0 +1,58 @@
+﻿/Api				Api接口源码目录
+
+/Api/acdd/			实例,爱车点点接口目录
+/Api/acdd/v1/User/loginController.class.php			实例,爱车点点v1版本,用户登录源控制器,实例接口地址 如 http://chengdu.cdrwx.cn/app.php/acdd/v1/User/login/index
+/Api/xcf/v2.0/Driver/driverController.class.php		实例,小车车夫v2.0版本,司机登录源控制器,实例接口地址 如 http://chengdu.cdrwx.cn/app.php/xcf/v2.0/Driver/driver/login
+
+
+/Api/Common/functions.php		公共的-所有api自定义函数
+/Api/Config/config.php			公共的-所有api配置
+
+
+实例
+/Api/acdd/Common/functions.php		私有的-api子项目自定义函数
+/Api/acdd/Config/config.php		私有的-仅限子项目中的api配置
+
+实例Model
+/Api/acdd/v1/Model/			爱车点点-v1版本的model目录
+
+
+/Application	自定义命名,PC前台展示目录
+
+/ext		提供给第三方php扩展目录
+/h5			h5目录
+/MyPHP		低层框架源码
+/Public		资源文件(程序后台创建之初需要的资源)
+/shellbat	所有php计划任务存放目录
+/System		自定义命名,后台管理源码目录
+/Uploads	来自APP用户,WEB前端用户,WEB后台管理员上传的资源(文件/图片..)
+
+
+/**
+ *  H5文件存放设计说明:
+ *  方便,若X个模块需要直接给后端,仅需把 eg1/   与 __PUBLIC__/eg1/   打包压缩后给服务端同事。
+ */
+/h5			提供H5的源目录,研发团队SVN 上传至SVN服务器,主服务器 下拉更新SVN。  后台控制是否指定下发到 子服务器。
+/h5/__PUBLIC__		H5的资源文件
+/h5/__PUBLIC__/js/jquery.js		实例,公共JS
+/h5/__PUBLIC__/css/css.js		实例,公共css
+/h5/__PUBLIC__/img/img.png		实例,公共img
+
+/h5/__PUBLIC__/_eg1/js/xx.js	 实例,H5的“_eg1”项目的js文件
+/h5/__PUBLIC__/_eg1/css/xx.css
+/h5/__PUBLIC__/_eg1/img/xx.jpg
+
+/h5/_eg1/xx.html	实例,H5的_eg1项目html源文件,资源直接外引用,如: <script src='../__PUBLIC__/_eg1/js/jquery.js'></script>
+			实例,域名访问: 	http://chengdu.cdrwx.cn/h5/_eg1/index.html
+
+
+
+
+..下发升级时,考虑暂停访问? 接口,返回暂停错误信息。 PC WEB 返回暂停页面提示。
+..子服务器,提供配置文件,可以拒绝接收更新。
+..传输加密,签名验证机制。
+
+.接口下发子服务器, 叠代升级
+.架构下发升级
+.图片上传至主服务器
+.数据库上传至主服务器
