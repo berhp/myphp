@@ -10,9 +10,9 @@
            │              └── functions.php                  
            │       └── Config                          //自定义其他配置文件(适用于整个架构),会加载此目录下的所有.php的文件
            │              └── config.php
-		   │
+           │
            ├── example                             //一些演示文件,查看后请删除此目录
-		   │          
+           │
            ├── ext                                 //预留引用第三方的扩展源,如 PHPExcel, phpqrcode
            │
            ├── h5                                  //前端h5源文件夹
