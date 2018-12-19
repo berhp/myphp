@@ -1,0 +1,93 @@
+<!--
+ 已编写测试 OK
+-->
+<head>
+	<meta charset="utf-8">
+	<title>h5 js base64图片或文件上传</title>
+	<script src="jquery-1.11.0.js"></script>
+</head>
+
+<hr>
+<!-- js base64上传文件或图片 -->
+<form method='post' action="index_demo.php" -enctype="multipart/form-data">
+	图片: <input type="file" onchange="action_base64_img(this, 'img1')"  accept="image/jpg,image/jpeg,image/png,image/gif">
+	<input type="hidden" name="img1" class="img1">
+	<img id="img1">
+	<br>
+	
+	图片2:<input type="file" onchange="action_base64_img(this, 'img2')" accept="image/jpg,image/jpeg,image/png,image/gif">
+	<input type="hidden" name="img2[]" class="img2">
+	<img id="img2">
+	<br>
+	图片2:<input type="file" onchange="action_base64_img(this, 'img3')" accept="image/jpg,image/jpeg,image/png,image/gif">
+	<input type="hidden" name="img2[]" class="img3">
+	<img id="img3">
+	<br>
+	文件:<input type="file" name="file" onchange="action_base64_file(this, 'img4')">
+	<input type="hidden" name="file" class="img4">
+	<img id="img4">
+	<br>
+	<input type="submit" value="提交">
+</form>
+
+<script>
+//berhp
+
+//图片  转base64
+/*
+	//reader.readAsBinaryString(file);  //将文件读取为二进制源码
+	//reader.readAsText(file);          //将文件读取为文件(源文件的内容,注意有中文,请将文件先保存为utf-8编码)
+	reader.readAsDataURL(file);         //将文件读取为DataURL,即base64编码
+*/
+function action_base64_img(obj, m) {
+	var image = new Image();
+	var canvas = document.createElement("canvas");
+	var ctx = canvas.getContext('2d');
+	var file = obj.files[0];
+	var reader = new FileReader();
+	reader.readAsDataURL(file);		//将文件读取为DataURL,即base64编码
+	reader.onload = function(e){
+		image.src = reader.result;  //未压缩的base64
+		console.log(file);
+	};
+	image.onload = function() {
+		var w = canvas.width = image.naturalWidth;
+		var h = canvas.height = image.naturalHeight;
+		ctx.drawImage(image, 0, 0, w, h, 0, 0, w, h);
+		//var basedata = canvas.toDataURL("image/jpeg", 0.8);  //压缩80%后的图片
+		var basedata = canvas.toDataURL(file.type, 0.8);  //压缩80%后的图片,动态取原图的类型进行压缩
+		//var basedata = reader.result;  //未压缩的原图
+		
+		//obj.src = basedata;
+		$('.'+m).val(basedata);
+		console.log(basedata);
+		$('#'+m).attr("src",basedata);
+	}
+};
+
+//文件 转base64
+function action_base64_file(obj, m){
+	var file = obj.files[0];
+	var reader = new FileReader();
+	reader.readAsDataURL(file);		//将文件读取为DataURL,即base64编码
+	reader.onload = function(e){
+		var basedata = reader.result;  //未压缩的原图
+
+		//★★★特殊处理,若base64拿不到文件类型,则从文件名取,自定义类型:  (ok) - berhp 2018.12.14
+		if(file.type == ''){
+			var _filedian = file.name.lastIndexOf(".");
+			var _file_type = file.name.substring(_filedian+1, file.name.length );
+			console.log(_filedian);
+			console.log(_file_type);
+			var _mydefault = "default/"+_file_type;
+			basedata = basedata.replace("data:;base64,", "data:"+_mydefault+";base64,");
+		}
+
+		//obj.src = basedata;
+		$('.'+m).val(basedata);
+		console.log(basedata);
+		$('#'+m).attr("src",basedata);
+		console.log(file);
+	};
+}
+</script>

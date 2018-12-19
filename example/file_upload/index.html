@@ -1,0 +1,21 @@
+<!--
+ 已编写测试 OK
+-->
+<head>
+	<meta charset="utf-8">
+	<title>h5 表单文件上传</title>
+</head>
+
+<hr>
+<!-- js base64上传文件或图片 -->
+<form method='post' action="index_demo.php" enctype="multipart/form-data">
+	图片: <input type="file" name="img1" accept="image/jpg,image/jpeg,image/png,image/gif">
+	<br>
+	图片2: <input type="file" name="img2[]" accept="image/jpg,image/jpeg,image/png,image/gif">
+	<br>
+	图片2: <input type="file" name="img2[]" accept="image/jpg,image/jpeg,image/png,image/gif">
+	<br>
+	文件:<input type="file" name="file">
+	<br>
+	<input type="submit" value="提交">
+</form>

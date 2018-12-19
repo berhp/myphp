@@ -135,7 +135,7 @@ class init{
 		C(include MyPHP_DIR.'/Config/config.php');
 		
 		// 加载自定义公共配置文件,自定义公共函数
-		include 'Common/Common/functions.php';
+		if(is_file('Common/Common/functions.php'))  include 'Common/Common/functions.php';
 		$_r = glob('Common/Config/*.php');  if($_r){ foreach ($_r as $_v){ C(include $_v); } }
 
 		// 检查是否为首次运行
