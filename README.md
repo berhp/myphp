@@ -3,7 +3,7 @@
 **MyPHP主要目录结构**
 
       myphp
-           ├── _tokenTemp                          //Api接口单点登录的token默认存放目录(程序生成),非单点登录访问api不会生成文件
+           ├── _tokenTemp                          //Api单点登录的token默认存放目录(程序生成),非单点登录访问api不会生成文件
            │
            ├── Common                              //公共配置
            │       └── Common                          //自定义适用于整个架构的公共函数,包含于(api 前端 后端..)
@@ -62,13 +62,13 @@
 1. 搭建好你本地的PHP相关环境
 2. 下载[myphp](https://github.com/berhp/myphp/archive/master.zip)
 3. 将下载后的myphp-master.zip文件,直接解压到你项目根目录下,然后运行,如:
-
+```
    http://localhost/yourPath/index.php   自动生成,目录"Application"(可在index.php中配置),运行成功会显示: "欢迎使用myphp:1.0.0"
    
    http://localhost/yourPath/api.php     自动生成,目录"Api"(可在api.php中配置),运行成功会显示: "{"Welcome":"api demo","Version":"1.0.0","url":"http:\/\/localhost\/yourPath\/api.php\/Home\/v1\/Home\/Index\/index"}"
    
    http://localhost/yourPath/admin.php   自动生成,目录"System"(可在admin.php中配置),运行成功会显示: "欢迎使用myphp:1.0.0"
-   
+```
    
 **Linux中使用步骤如下：**
 1. 搭建好你本地的PHP相关环境,注意zip,unzip功能要安装
@@ -81,8 +81,7 @@ wget https://github.com/berhp/myphp/archive/master.zip
 unzip master.zip
 ```
 
-3. 对你的www目录,授权对应的apache或nginx的用户组;
-如:
+3. 对你的www目录,授权对应的apache或nginx的用户组,如:
 ```
 /**
  * 说明: chown -R daemon:daemon /home/www/ 标识授权daemon组的daemon用户 对/home/www有操作权限
@@ -90,15 +89,16 @@ unzip master.zip
  */
 mkdir -p /home/www
 chown -R daemon:daemon /home/www/
-````
+```
 
 4.在浏览器中运行,如
+```
    http://xx.xx.xx/yourPath/index.php   自动生成,目录"Application"(可在index.php中配置),运行成功会显示: "欢迎使用myphp:1.0.0"
    
    http://xx.xx.xx/yourPath/api.php     自动生成,目录"Api"(可在api.php中配置),运行成功会显示: "{"Welcome":"api demo","Version":"1.0.0","url":"http:\/\/localhost\/yourPath\/api.php\/Home\/v1\/Home\/Index\/index"}"
    
    http://xx.xx.xx/yourPath/admin.php   自动生成,目录"System"(可在admin.php中配置),运行成功会显示: "欢迎使用myphp:1.0.0"
-
+```
 
 
 ## 详细使用文档
