@@ -129,8 +129,10 @@ chown -R daemon:daemon /home/www/
 
 ### 2017.12.29
 * [x] 新增参数,可动态配置是否支持JS跨域请求
+```
   /* Api接口设置 */
   'Api_is_Cross' => false,  //true-支持JS跨域请求  false-不支持JS跨域请求, 默认 false
+```
 
 ### 2017.12.28
 更新token支持自定义前缀,和测试OK,
