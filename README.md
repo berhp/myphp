@@ -107,3 +107,53 @@ chown -R daemon:daemon /home/www/
 
 参考[MyPHP官方文档](http://doc.berhp.cn/myphp)
 
+
+## 更新说明
+
+### 2018.12.19
+* [x] 更新扩展Upload.class.php 支持base64文件上传方式
+
+### 2018.12.4
+* [x] I方法的默认safe过滤时,移除2端的空白,制表符等符号
+
+### 2018.11.21
+* [x] 1.更新S方法支持PHP7.2.1+版本
+* [x] 2.S方法支持所有非null数据，
+* [x] 3.非NULL类型, 都会原样存储下来,支持特殊存储:空字符串,空数组,空对象,布尔型,整型(0),浮点型(0.0)
+
+### 2018.11.20
+* [x] 更新方法I(), 更新Api基础类的unicodeString() 方法,同时支持更严谨性的php7.2.1版本
+
+### 2018.2.5
+* [x] 更新Api基础类,支持API数据缓存功能。
+
+### 2017.12.29
+* [x] 新增参数,可动态配置是否支持JS跨域请求
+  /* Api接口设置 */
+  'Api_is_Cross' => false,  //true-支持JS跨域请求  false-不支持JS跨域请求, 默认 false
+
+### 2017.12.28
+更新token支持自定义前缀,和测试OK,
+更新 各模块,若 自定义前缀时后的 token值，仅对应模块下的反签名认证 才有效果。
+或者 除非  其他地方 知道 X个模块下设置的  自定义签名, 自定义前缀  也可以验证通过
+
+### 2017.12.20
+=============
+1. 更新 MyPHP 的常量    __URL__   :
+   由原来的:  http://192.168.0.200:8088/index.php   =>  http://192.168.0.200:8088/
+   或    http://192.168.0.200/rwxphp/index.php   => http://192.168.0.200/rwxphp/
+
+2. 新增，配置参数:  is_spl_autoload_registerOther 
+   是否队列继续加载第三方的自动加载类(true-可以 false-不可以),默认 false,当MyPHP框架+项目内类文件不存在,则终止了,若使用第三方类,需要临时配置此参数为true
+```
+	若调用第三方类的 自动加载功能，
+	需在方法中，临时配置他属性为  true
+	实例:
+	public function xx(){
+	   C('is_spl_autoload_registerOther',true );
+	    include_once './ext/PHPExcel/PHPExcel.php';
+	    require_once './ext/PHPExcel/PHPExcel/IOFactory.php';
+	    require_once './ext/PHPExcel/PHPExcel/Reader/Excel5.php';
+	   XX::xxdemo();
+	}
+```
