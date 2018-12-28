@@ -296,8 +296,10 @@ function M($name='', $isaction=true, $db_config=array()) {
 	$db_config = $db_config ? $db_config : C('db');
 	if( $isaction === true ){
 		$tablePrefix = $db_config['DB_PREFIX']; //表前缀
-		if( strpos($name, $tablePrefix) === false ){
-			$name = $tablePrefix . $name;
+		if($tablePrefix){
+			if( strpos($name, $tablePrefix) === false ){
+				$name = $tablePrefix . $name;
+			}			
 		}
 	}
     //$class = '\DB\\'.$db_config['DB_TYPE'];  // \db\mysql

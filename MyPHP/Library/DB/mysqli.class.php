@@ -30,9 +30,6 @@ class mysqli{
 	public $join = '';
 	public $having = '';
 	public $data = '';
-	public $WhereLink = 'AND';
-	public $FirstLink = 'AND';
-	private $Case = array();
 	public $alias = '';  	//对表取别名
 	public $_sql = ''; 		//最终执行的sql语句
 	public $errormsg = ''; 	//sql错误信息
@@ -120,7 +117,7 @@ class mysqli{
 	 */
 	public function table($tableName='', $isaction=true){
 		$this->join = '';
-		if( $isaction === true ){
+		if( $isaction === true && $this->tablePrefix ){
 			if( strpos($tableName, $this->tablePrefix) === false ){
 				$this->table = $this->tablePrefix . $tableName;
 				return $this;
@@ -133,148 +130,64 @@ class mysqli{
 
 	/**
 	 * 条件
-	 * @param string||array $where 字符串 或 若为数组,需要为一维
+	 * @author berhp 2018.12.27
+	 * @param string||array $where 字符串 或 数组
 	 * @tutorial <pre> 
-	 *   1. 若是数组为一维数组,如 $where = array('name'=>'3','pass'=>4);
-	 *   2. 数组 按 and 拼接; 字符串按原样拼接
+	 *   1. $where为字符串时,按原样拼接。                详见: 【type1  字符串】
+	 *   2. $where为一维数组时,都按 and 拼接;   详见: 【type2 单纯数组】
+	 *   3. $where为二维数组时, $k=>$v
+	 *        若$v为字符串,则按 and 拼接,       详见: 【type3 混合数组】的'b'=>'2'
+	 *        若$v为数组时,则按原样拼接,        详见: 【type3 混合数组】的array( "and (c=1 or d=2))", "or (e='3')" )
 	 * @example
-	 * 传递数组时
-	 * $data = array('name',3,5,'between');
-	 *	(`name` between "3" and "5")
-	 * $data = array('name'=>3,'pass'=>4,'and');
-	 *  ( `name`="3" and `pass`="4" )
-	 * $data = array('name',3,5,'>');
-	 * 	(`name` > "3")
-	 * $data = array(
-			array('name'=>3,'pass'=>4,'OR'),
-			'b'=>3,'c'=>4,'and',
-			array('phone'=>13711132773,'user_name'=>'zhoushuqiang','and'),
-			array('user',5,10,'between'),
-			array('age',5,'<='),
-			array('number',20,'>='),
-		);
-	 	( `b`="3" and `c`="4" ) and ( `name`="3" OR `pass`="4" ) and ( `phone`="13711132773" and `user_name`="zhoushuqiang" ) and (`user` between "5" and "10") and (`age` <= "5") and (`number` >= "20")
+	 *    ★字符串: 原样拼接
+	 *    【type1 字符串 】例如,条件为: (a=1 and b=2 and (c=1 or d=2)) or (e=3)
+	 *    【源码】：
+	 		$where = "(a=1 and b=2 and (c=1 or d=2)) or (e=3)";
+	 
+	 *    ★一维数组: $k=>$v都是AND拼接!
+	 *    【type2 单纯数组】例如,条件为: `a`='1' AND `b`='2' AND e.ddd='4'
+	 *    【源码】：
+			$where = array(
+					'a'=>'1',
+					'b'=>'2',
+					'e.ddd' => '4',
+			);
+
+	 *    ★二维数组: $k=>$v,  $v是数组时,原样拼接;  $v是字符串时,AND拼接!
+	 *    ★此特殊写法,支持 'or','and','between','>','<','>=','<=','like' 等等; 遇见非常非常复杂的sql条件语句,建议用【type1字符串】方式
+	 *    【type3 混合数组】例如,条件为: (a=1  AND `b`='2' and (c=1 or d=2))  or (e='3')
+	 *    【源码】：
+			$where = array(
+					array( "(a=1" ),
+					'b' => '2',
+					array( "and (c=1 or d=2))", "or (e='3')" ),
+			);
 	 */
 	public function where($where=''){
-		$this->where = array();
 		if( is_array($where) ){
 			$r = '';
-//			foreach ($where as $k=>$v){
-//				if( strpos($k,'.') ){
-//					$r.= " {$k}='{$v}' AND";
-//				}else{
-//					$r.= " `{$k}`='{$v}' AND";
-//				}
-//			}
-//			$r = mb_substr($r, 0, -4, 'utf-8');
-			$temp = array();
-			foreach($where as $key=>$value){
-				if(!is_array($value)){
-					$temp[$key] = $value;
-					unset($where[$key]);
+			foreach ($where as $k=>$v){
+				if(is_array($v)){
+					foreach ($v as $vv){
+						if($vv)  $r.= ' '.$vv.' ';
+					}
+				}else{
+					$_r = $r ? ' AND ' : '';
+					if( strpos($k,'.') ){
+						$r.= $_r."{$k}='{$v}'";
+					}else{
+						$r.= $_r."`{$k}`='{$v}'";
+					}
 				}
 			}
-			$this->where[] = $this->_where($temp,true);
-//			echo $r.'<br/>';
-			if($where){
-				foreach($where as $k=>$v){
-					$this->where[] = $this->_where($v);
-				}
-			}
-			$this->where = implode(' ',$this->where);
-			$this->where = trim($this->where);
-			$this->where = str_replace('()',' ',$this->where);
-			$this->where = trim($this->where);
-			$r = trim($this->where,$this->FirstLink);
-//			var_dump($r);
 		}else{
 			$r = $where;
 		}
-//		echo $r;
 		$this->where = $r?(' WHERE '.$r):'';
 		return $this;
 	}
 
-	/**
-	 * 数据库where条件多条件封装调用
-	 * @author shouzhuqiang
-	 * @version 1.0
-	 * @date 2017/11/28 14:00
-	 */
-	public function _where($data='',$FirstLink=false){
-		if(is_string($data)){
-			return $data;
-		}
-
-		$where = '';
-		foreach(array('or','and','between','>','<','>=','<=','like') as $key=>$value){
-			if($match = preg_grep("/^{$value}$/i",$data)){
-				foreach($match as $k=>$v){
-					unset($data[$k]);
-				}
-				$this->WhereLink = array_values($match)[0];
-				if($FirstLink){
-					$this->FirstLink = array_values($match)[0];
-				}
-			}
-		}
-		$this->Case = $data;
-		$where = $this->CaseWhere();
-		return $where;
-	}
-
-	public function CaseWhere(){
-		$where = '(';
-//		echo $this->WhereLink;
-//		die;
-		foreach($this->Case as $key =>$value){
-
-			switch(strtolower($this->WhereLink)){
-				case 'or':
-					$where .= ' '.$key.'="'.$value.'" '.$this->WhereLink;
-					break;
-				case 'between':
-					$this->Case  = array_values($this->Case);
-					if(count($this->Case)==3){
-						$where = '('.$this->Case[0].' '.$this->WhereLink.' "'.$this->Case[1].'" and "'.$this->Case[2].'"';
-					}
-					break;
-				case '>':
-					if(count($this->Case)==2){
-						$where = '('.$this->Case[0].' '.$this->WhereLink.' "'.$this->Case[1].'"';
-					}
-					break;
-				case '<':
-					if(count($this->Case)==2){
-						$where = '('.$this->Case[0].' '.$this->WhereLink.' "'.$this->Case[1].'"';
-					}
-					break;
-				case '>=':
-					if(count($this->Case)==2){
-						$where = '('.$this->Case[0].' '.$this->WhereLink.' "'.$this->Case[1].'"';
-					}
-					break;
-				case '<=':
-					if(count($this->Case)==2){
-						$where = '('.$this->Case[0].' '.$this->WhereLink.' "'.$this->Case[1].'"';
-					}
-					break;
-				case 'like':
-					if(count($this->Case)==2){
-						$where = '('.array_values($this->Case)[0].' '.$this->WhereLink.' "%'.array_values($this->Case)[1].'%"';
-//						echo  $where.'1<br/>';
-					}
-					break;
-				default:
-					$where .= ' '.$key.'="'.$value.'" '.$this->WhereLink;
-
-			}
-		}
-
-		$where = trim($where,$this->WhereLink).') '.$this->FirstLink.'';
-//		echo $where.'2<br/>';
-		return $where;
-	}
+	
 	/**
 	 * join
 	 * @param no string $join

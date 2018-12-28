@@ -110,6 +110,24 @@ chown -R daemon:daemon /home/www/
 
 ## 更新说明
 
+
+### 2018.12.28
+* [x] 更新了 Log\get.class.php类，支持：
+```
+//内存消耗打印
+\Log\get::get_memory_usage();
+$r=array();
+for($i=0;  $i<=100000;  $i++){
+	$r[] = $i;
+}
+\Log\get::get_memory_usage();
+die;
+
+//运行状态打印 (包含运行的所有情况)
+\Log\get::stats();
+die;
+```
+
 ### 2018.12.19
 * [x] 更新扩展Upload.class.php 支持base64文件上传方式
 
