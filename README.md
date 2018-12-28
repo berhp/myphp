@@ -105,7 +105,7 @@ chown -R daemon:daemon /home/www/
 
 ## 详细使用文档
 
-参考[MyPHP官方文档](http://doc.berhp.cn/myphp)
+参考[MyPHP官方文档](http://help.berhp.cn/myphp)
 
 
 ## 更新说明
