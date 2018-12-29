@@ -115,8 +115,26 @@ class get{
 	 * 【内用】-计算 当前共耗时 和 内存使用情况
 	 * @tutorial
 	 *   记录的开始毫秒,与 开始时的内存,在框架 初文件 init.class.php中
+	 * @example
+		Array
+		(
+		    [start_time] => 1546061287.2202     //框架内,init.class.php中最早记录时的时间戳
+		    [start_usage] => 340152  			//框架内,最早记录时的内存使用情况
+		    [over_time] => 1546061350.9328      //此次内调时,时间戳
+		    [over_usage] => 4390392 			//此次内调时,总内存使用情况
+		    [offset_time] => 63.7126s 			//此次与最早的运行时间对比,
+		    [offset_usage] => 3955.31kb			//此次与最早的内存使用对比
+		    [last_offset_time] => 37.5611s  	//此次与上一次内调时的运行时间对比
+		    [last_offset_usage] => 1722.08kb 	//此次与上一次内调时的内存使用对比
+		)
 	 */
 	private static function _action(){
+		if(isset($GLOBALS['_myRunInfo']['over_time'])){
+			$GLOBALS['_myRunInfo']['last_offset_time'] = round( ( microtime(TRUE) - (double)$GLOBALS['_myRunInfo']['over_time'] ), 4).'s';
+		}
+		if(isset($GLOBALS['_myRunInfo']['over_usage'])){
+			$GLOBALS['_myRunInfo']['last_offset_usage'] = round( ( memory_get_usage() - (double)$GLOBALS['_myRunInfo']['over_usage'] )/1024 , 2).'kb';
+		}
 		$GLOBALS['_myRunInfo']['over_time'] = microtime(TRUE);
 		$GLOBALS['_myRunInfo']['over_usage'] = memory_get_usage();
 		$GLOBALS['_myRunInfo']['offset_time'] = round(( $GLOBALS['_myRunInfo']['over_time'] - $GLOBALS['_myRunInfo']['start_time'] ),4) .'s';  //当前共耗时
