@@ -21,7 +21,7 @@ class HtmlTemplate extends  Template{
      */
     public function _mselect($str, $param, $content){
         $table  = isset($param['table'])?$param['table']:'';
-        $filed  = isset($param['filed'])?$param['filed']:'';
+        $field  = isset($param['field'])?$param['field']:'';
         $where  = isset($param['where'])?$param['where']:'';
         $group  = isset($param['group'])?$param['group']:'';
         $order  = isset($param['order'])?$param['order']:'';
@@ -31,7 +31,7 @@ class HtmlTemplate extends  Template{
         $alias  = isset($param['alias'])?$param['alias']:'';
         $key=$param['id'];
         $db = new \DB\mysqli();
-        $r = $db->table($table)->alias($alias)->join($join)->filed($filed)->where($where)->group($group)->having($having)->order($order)->limit($limit)->select();
+        $r = $db->table($table)->alias($alias)->join($join)->field($field)->where($where)->group($group)->having($having)->order($order)->limit($limit)->select();
         if(!$r) return '';
         //传数据;
         $this->setdata($key,$r);
