@@ -105,7 +105,10 @@ class mysqli{
 		if( in_array($funName, array('alias','field')) ){
 			$this->$funName = ' '.$datas[0];  return $this;
 		}
-		return $this;
+		
+		//更多直接调用php Mysqli类的方法
+		$obj = $this->db;
+		return call_user_func_array( array($obj, $funName), $datas );
 	}
 
 	/**
