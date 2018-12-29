@@ -93,17 +93,18 @@ class mysqli{
 	 * @param no string||array $data 传参数,无论传什么,最终都是二维数组
 	 */
 	public function __call( $funName, $datas ){
-		if(!$datas) return $this; 		//未传参
-		if(!$datas[0]) return $this; 	//'',0,null
 		$funName = strtolower($funName);
 		if( in_array($funName, array('group','order')) ){
-			$this->$funName = strtoupper($funName).' BY '.$datas[0];  return $this;
+			$_str = isset($datas[0]) ? $datas[0] : '';
+			$this->$funName = strtoupper($funName).' BY '.$_str;  return $this;
 		}
-		if( in_array($funName, array('limit','having')) ){ 
-			$this->$funName = strtoupper($funName).' '.$datas[0];  return $this;
+		if( in_array($funName, array('limit','having')) ){
+			$_str = isset($datas[0]) ? $datas[0] : '';
+			$this->$funName = strtoupper($funName).' '.$_str;  return $this;
 		}
 		if( in_array($funName, array('alias','field')) ){
-			$this->$funName = ' '.$datas[0];  return $this;
+			$_str = isset($datas[0]) ? $datas[0] : '';
+			$this->$funName = ' '.$_str;  return $this;
 		}
 		
 		//更多直接调用php Mysqli类的方法
