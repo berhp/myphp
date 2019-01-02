@@ -1,4 +1,4 @@
-**演示高并下写Log**
+**演示高并发下写Log**
 请准备2个php版本,同样代码下,进行测试:
 如[php7.3](http://php.net/downloads.php#v7.3.0)
 如[php7.1.25](http://php.net/downloads.php#v7.1.25)
