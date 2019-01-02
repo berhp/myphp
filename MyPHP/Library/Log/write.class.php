@@ -76,7 +76,7 @@ class write{
         }else if($fileSize > $this->fileSize ){
             //将之前的文件重命名并保存下来
             rename( $this->fileName, $this->fileName.'_'.date('His',time()).$this->ext );
-            //file_put_contents($this->fileName,'',FILE_APPEND); //重新生成新文件,避免其他异步写不进去报错。
+            file_put_contents($this->fileName,'',FILE_APPEND); //重新生成新文件,避免其他异步写不进去报错。
         }
         $param = '';
         if( $_SERVER['REQUEST_METHOD'] == 'POST' ){
