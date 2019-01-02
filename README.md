@@ -113,7 +113,7 @@ chown -R daemon:daemon /home/www/
 ### 2019.1.2
 * [x] 新增pdo.class.php类
 * [x] 修复mysqli.class.php类的属性$field未传,则默认为*
-* [x] 修复write.class.php类的write()方法,新增单独锁,推荐使用php7.3,可在根源上解决高并发写log时,"failed to open stream: Permission denied"的错误!
+* [x] 修复write.class.php类的write()方法,新增单独锁,推荐使用php7.3,可在根源上解决高并发写log时,"failed to open stream: Permission denied"的错误!详见:example\log_write\README.md
 
 ### 2018.12.28
 * [x] 更新了 Log\get.class.php类，支持：
