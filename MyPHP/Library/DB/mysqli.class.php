@@ -102,7 +102,7 @@ class mysqli{
 			$_str = isset($datas[0]) ? $datas[0] : '';
 			$this->$funName = strtoupper($funName).' '.$_str;  return $this;
 		}
-		if( in_array($funName, array('alias','field')) ){
+		if( in_array($funName, array('alias')) ){
 			$_str = isset($datas[0]) ? $datas[0] : '';
 			$this->$funName = ' '.$_str;  return $this;
 		}
@@ -111,6 +111,19 @@ class mysqli{
 		$obj = $this->db;
 		return call_user_func_array( array($obj, $funName), $datas );
 	}
+	
+	
+	/**
+	 * 字段
+	 * @author berhp 2019.1.2
+	 * @param no string $field 字段,若不传,默认为*
+	 */
+	public function field($field='*'){
+		if(!$field) $field='*';
+		$this->field = $field;
+		return $this;
+	}
+	
 
 	/**
 	 * 表名
@@ -515,7 +528,9 @@ class mysqli{
 	 */
 	public function select($sql=''){
 		if(!$sql){
-			if( !$this->field ) $this->field = '*';
+			if( !$this->field ){
+				$this->field = '*';
+			}
 			$sql = "SELECT {$this->field} FROM {$this->table} {$this->alias} {$this->join} {$this->where} {$this->group} {$this->having} {$this->order} {$this->limit}";
 		}
 		$this->_sql = $sql;
