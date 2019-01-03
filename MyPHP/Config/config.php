@@ -90,11 +90,11 @@ return array(
 	'shuiyin' => array(
 			'image_name' 			=> 'shui_', 		//生成水印后的图片名称前缀
 			'image_path' 			=> 'Uploads/', 		//新图片的保存目录,''未配置,为当前目录下, 如 img/  ★若不存在目录,需要先手动创建目录
-			'image_padding_x' 	=> 100, 				//水印,x相对间距,单位px
-			'image_padding_y' 	=> 100, 				//水印,y相对间距,单位px
-			'image_merge_type' 	=> 'lt', 				//方式,默认:lt- 从左上顶部开始,坐标(0,0), lb-左下底部   rt-右上顶部   rb-右下底部
+			'image_padding_x' 	    => 100, 			//水印,x相对间距,单位px
+			'image_padding_y' 	    => 100, 			//水印,y相对间距,单位px
+			'image_merge_type' 	    => 'lt', 			//方式,默认:lt- 从左上顶部开始,坐标(0,0), lb-左下底部   rt-右上顶部   rb-右下底部
 			'image_opacity' 		=> 60, 				//水印透明度 (0~100)
-			'image_watermarkfile' => 'Public/b.png', 	//水印图片本地路径,如 b.png ★不支持外网http图片
+			'image_watermarkfile'   => 'Public/b.png', 	//水印图片本地路径,如 b.png ★不支持外网http图片
 	),
 
 	/* 微缩图裁切设置 */
@@ -127,11 +127,11 @@ return array(
 
 	/* Logs错误日志设置 */
 	'log' => array(
-			'filePrefix' 	=>'log_',  	//生成的文件前缀,非必须
-			'ext' 			=>'.txt', 	//文件后缀,非必须,如.txt
-			'filePath' 	=> APP_RUNTIME_PATH.'Logs/',  //存放目录,相对于网站index.php目录,默认为项目Runtime/Logs目录下,文件夹不存在,会自动创建
-			'fileSize' 	=>8,			//文件大小,单位MB,超过了会自动创建新的文件，超过10M Notepad++ 不可以打开
-			'timezone_set' => 'PRC',	//时区,默认北京8点
+			'filePrefix' 	=>'',  	    //生成的文件前缀,非必须,如error_
+			'ext' 			=>'.log', 	//文件后缀,非必须,如.log
+			'filePath' 	    => APP_RUNTIME_PATH.'Logs/',  //存放目录,相对于网站index.php目录,默认为项目Runtime/Logs目录下,文件夹不存在,会自动创建
+			'fileSize' 	    =>8,		//文件大小,单位MB,超过了会自动创建新的文件，超过10M Notepad++ 不可以打开
+			'timezone_set'  => 'PRC',	//时区,默认北京8点
 	),
 
 	/* S方法文件缓存设置 */
@@ -141,16 +141,16 @@ return array(
 	),
 	
 	/* display设置 */
-	'display_open_dirLevel' => false, 	//是否开启目录层次(默认false-不 true-开启),若开启 加载路径为  View/XX/xx.html; 不开启,加载路径为  View/XX_xx.html
+	'display_open_dirLevel' => false, 		//是否开启目录层次(默认false-不 true-开启),若开启 加载路径为  View/XX/xx.html; 不开启,加载路径为  View/XX_xx.html
 
 	/* 模板设置 */
 	'template' => array(
 			'filePath' => APP_TEMPLATE_PATH, 			//模板所在目录，默认为 MYPHP框架下的 Template中
 			'404' 		=> '404.tpl', 		//404错误文件, 常量 APP_TEMPLATE_PATH 指定的目录下,如 404.tpl'
 			'error' 	=> 'error.tpl', 	//错误提示模版页
-			'success' 	=> 'success.tpl', //成功提示模版页
+			'success' 	=> 'success.tpl',   //成功提示模版页
 			'isUse' 	=> false, 			//是否启动模板生成, 默认false-不使用, true-使用 (若项目下模板名文件夹不存在,会根据模板名动态生成后台数据库与界面)
-			'name' 	=> '', 				//模板名
+			'name' 	=> '', 				    //模板名
 	),
 	
 	/* 自动加载类设置 */
@@ -160,7 +160,7 @@ return array(
 	/* 邮件设置  */
 	'email' => array(
 	    'EMAIL_NICKNAME' 		=> 'huangping', 			//自定义发件人昵称
-		'EMAIL_FROM_NAME' 	=> '343217456@qq.com',   // *发件人邮箱
+		'EMAIL_FROM_NAME' 	    => '343217456@qq.com',   // *发件人邮箱
 		'EMAIL_SMTP' 			=> 'smtp.qq.com',   	  // *smtp
 		'EMAIL_USERNAME' 		=> '343217456@qq.com',   // *账号
 		'EMAIL_PASSWORD' 		=> 'vyaolecttfombgef',   // *密码  注意: 163和QQ邮箱是授权码；不是登录的密码
