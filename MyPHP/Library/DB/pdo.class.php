@@ -1,7 +1,7 @@
 <?php 
 /**
  * pdo类
- * @author berhp
+ * @author berhp,ty
  * @tutorial
  * 	1. 这里仅仅二次封装了常用的方法
  *  2. 未封装的方法,或直接调用低层源生pdo类中的方法执行。
@@ -106,13 +106,20 @@ class pdo{
 	 * @return $this
 	 */
 	public function table($tableName='', $isaction=true){
-		if( $isaction === true ){
-			if( strpos($tableName, $this->tablePrefix) === false ){
-				$this->table = $this->tablePrefix . $tableName;
-				return $this;
-			}
+		if( $isaction === true && strpos($tableName, $this->tablePrefix) === false ){
+			$this->table = $this->tablePrefix . $tableName;
+		}else {
+			$this->table = $tableName;
 		}
-		$this->table = $tableName;
+		return $this;
+	}
+
+	/**
+	 * @param string $alias
+	 * @return $this
+	 */
+	public function alias($alias=''){
+		$this->alias=$alias;
 		return $this;
 	}
 
@@ -132,7 +139,7 @@ class pdo{
 	 * @return $this|bool
 	 */
 	public function where($where=''){
-		if(!is_array($where) && !is_string($where)) return false;
+		if(!$where) return $this;
 		$create_where='';
 		if(is_array($where)){
 			foreach($where as $k=>$v){
@@ -151,7 +158,14 @@ class pdo{
 		return $this;
 	}
 
-
+	/**
+	 * @param string $order
+	 * @return $this
+	 */
+    public function order($order=''){
+		if($order)$this->order='ORDER BY '.$order;
+		return $this;
+	}
 	/**
 	 * M('xxx a')->join('xxx b on b.id=a.id','LEFT JOIN')
 	 * @param string $join
@@ -209,7 +223,16 @@ class pdo{
 	 * @return $this
 	 */
 	public function limit($limit=''){
-		$this->limit='LIMIT '.$limit;
+		if($limit)$this->limit='LIMIT '.$limit;
+		return $this;
+	}
+
+	/**
+	 * @param string $group
+	 * @return $this
+	 */
+	public function group($group=''){
+		if($group)$this->group='GROUP BY '.$group;
 		return $this;
 	}
 

@@ -96,14 +96,17 @@ class mysqli{
 		$funName = strtolower($funName);
 		if( in_array($funName, array('group','order')) ){
 			$_str = isset($datas[0]) ? $datas[0] : '';
+			if(!$_str) return $this;
 			$this->$funName = strtoupper($funName).' BY '.$_str;  return $this;
 		}
 		if( in_array($funName, array('limit','having')) ){
 			$_str = isset($datas[0]) ? $datas[0] : '';
+			if(!$_str) return $this;
 			$this->$funName = strtoupper($funName).' '.$_str;  return $this;
 		}
 		if( in_array($funName, array('alias')) ){
 			$_str = isset($datas[0]) ? $datas[0] : '';
+			if(!$_str) return $this;
 			$this->$funName = ' '.$_str;  return $this;
 		}
 		

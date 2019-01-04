@@ -14,7 +14,7 @@ class Controller{
     protected $_r=array();
 
 	public function __construct(){
-		if( APP_HEMLCACHE===true ) self::_action_tmpl_html_string();
+		if( APP_HEMLCACHE===true || C('html.APP_HEMLCACHE')===true ) self::_action_tmpl_html_string();
 		$this->_init();
 	}
 	/**

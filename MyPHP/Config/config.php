@@ -120,9 +120,10 @@ return array(
 
 	/* 纯静态缓存设置 */
 	'html' => array(
-			'filePath' => APP_RUNTIME_PATH.'Html/', //存放目录,默认项目Runtime/Html目录下,文件夹不存在,会自动创建
-			'filemtime' => 60, 						//允许的纯静态文件的有效时间,单位秒,若过期,重新生成纯静态缓存
-			'no_cache' => array(),  				//不需要纯静态缓存的,不用区分大小写,'模块名_控制器名_方法名' 如 array('home_Index_code','Home_index_login')
+			'filePath'      => APP_RUNTIME_PATH.'Html/', //存放目录,默认项目Runtime/Html目录下,文件夹不存在,会自动创建
+			'filemtime'     => 60, 						//允许的纯静态文件的有效时间,单位秒,若过期,重新生成纯静态缓存
+			'no_cache'      => array(),  				//不需要纯静态缓存的,不用区分大小写,'模块名_控制器名_方法名' 如 array('home_Index_code','Home_index_login')
+			'APP_HEMLCACHE' => false,  				    //是否开启纯静态缓存,默认false-不开启, true-开启 (支持xx个子模块中开启)(可在你需要的模块config中设置或C()方法设置后,仅对应的模块会纯静态缓存)
 	),
 
 	/* Logs错误日志设置 */
