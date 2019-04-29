@@ -777,12 +777,15 @@ function checkAPPKeyword( $datas=array(), $fields = array(), $error = '',$CallBa
         $server_url .= substr($_SERVER['SCRIPT_NAME'],0,strrpos($_SERVER['SCRIPT_NAME'],'/'));
         return $server_url;
     }
+    
 	/**
 	 * 模拟浏览器进行http请求 支持post和get
+	 * 
 	 * @param string $url
-	 * @param array $post_data
+	 * @param int $timeout  	 设置请求超时(默认0 不限制)
+	 * @param array $post_data   ★若超时请求不到,会返回false
 	 */
-	function curl_request($url = '', $post_data = array(),$ispost=true) {
+	function curl_request($url = '', $post_data = array(),$ispost=true, $timeout=0) {
 		if (empty($url)) {
 			return false;
 		}
@@ -802,15 +805,18 @@ function checkAPPKeyword( $datas=array(), $fields = array(), $error = '',$CallBa
             if($ispost){
                 //$url=$url;
             }else{
-                $url = $url.'&'.$post_data;
+                $url = $url.'?'.$post_data;
             }
 		}
 		// $curlPost = 'key='.$key;
 		header("Content-type: text/html; charset=utf-8");
-		$ch = curl_init();//初始化curl
-		curl_setopt($ch, CURLOPT_URL,$url);//抓取指定网页
-		curl_setopt($ch, CURLOPT_HEADER, 0);//设置header
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);//要求结果为字符串且输出到屏幕上
+		$ch = curl_init();                           //初始化curl
+		curl_setopt($ch, CURLOPT_URL,$url);          //抓取指定网页
+		curl_setopt($ch, CURLOPT_HEADER, 0);         //设置header
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //要求结果为字符串且输出到屏幕上
+		if($timeout){
+			curl_setopt($ch, CURLOPT_TIMEOUT,$timeout);  //设置超时 (默认 0-无限等待,或直到php.ini的最高配置,比如120秒无影响就失效了)
+		}
 		if($ispost){
 			curl_setopt($ch, CURLOPT_POST, 1);//post提交方式
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);

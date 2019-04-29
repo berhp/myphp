@@ -32,8 +32,13 @@ class error{
 		$_error = error_get_last(); 						//获取错误信息
 		if($_error){
 			if( APP_DEBUG === true ){
-				defined('MyPHP_DIR')?p($_error):var_dump($_error);
-
+				if( defined('MyPHP_DIR') ){  //我们框架内
+					if( defined('IS_API') ){
+						(IS_API===true) ? '' : p($_error);    //API模式,界面不打印错误; 反之非API模式才界面打印错误
+					}
+				}else{  //框架外
+					var_dump($_error);
+				}
 				$msg = '[error_file]:'.$_error['file'].' 第'.$_error['line']."行\n";
 				$msg .= '[error_type]:'.$_error['type']."\n";
 				$msg .= '[error_message]:'.$_error['message'];

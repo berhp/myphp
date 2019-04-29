@@ -72,7 +72,7 @@ class mysqli{
 			$log = new \Log\write();
 			$log->write($msg);
 		}
-		if(APP_DEBUG===true){
+		if( defined('APP_DEBUG') && APP_DEBUG===true){
 			$msg = "[sql]:{$this->_sql}";
 			$log = new \Log\write();
 			$log->write($msg);			

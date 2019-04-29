@@ -154,7 +154,8 @@ class pdo{
 		}else{
 			$create_where.=strlen($create_where)?' AND '.$where:$where;
 		}
-		$this->where.=strlen($this->where)?' AND '.trim($create_where):'WHERE '.trim($create_where);
+		//$this->where.=strlen($this->where)?' AND '.trim($create_where):'WHERE '.trim($create_where);
+		$this->where='WHERE '.trim($create_where);
 		return $this;
 	}
 
@@ -486,6 +487,7 @@ class pdo{
 	 */
 	private function create_update_data(array $data){
 		if($this->arrayLevel($data)>1) return false;
+		$this->_update_str='';
 		foreach($data as $k=>$v){
 			$this->_update_str.=$k."='".addslashes($v)."',";
 		}
@@ -514,6 +516,7 @@ class pdo{
 	private function create_insert_data_two(array $data){
 		$first_key_data=reset($data);
 		$this->_insert_into_key='('.implode(',',array_keys($first_key_data)).')';
+		$this->_insert_into_value='';
 		foreach($data as $val){
 			if(array_diff_key($first_key_data,$val)) return false;
 			$ls_str='(';

@@ -142,7 +142,7 @@ return array(
 	),
 	
 	/* display设置 */
-	'display_open_dirLevel' => false, 		//是否开启目录层次(默认false-不 true-开启),若开启 加载路径为  View/XX/xx.html; 不开启,加载路径为  View/XX_xx.html
+	'display_open_dirLevel' => true, 		//是否开启目录层次(默认false-不 true-开启),若开启 加载路径为  View/XX/xx.html; 不开启,加载路径为  View/XX_xx.html
 
 	/* 模板设置 */
 	'template' => array(
