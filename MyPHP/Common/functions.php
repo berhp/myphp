@@ -825,7 +825,38 @@ function checkAPPKeyword( $datas=array(), $fields = array(), $error = '',$CallBa
 		curl_close($ch);
 		return $data;
 	}
-
+	
+	
+	/**
+	 * PHP发送Json对象数据  OK
+	 * @param $url 请求url
+	 * @param $jsonStr 发送的json字符串,如{"name":"1","sex":"1"}
+	 * @return string
+	 * @tutorial  这里时 PHP,POST方式 用JSON格式请求其他$url地址
+	 *  若是 PHP这边接收JSON数据时:
+		$data = file_get_contents('php://input'); //接收post请求来的json数据
+		$data = json_decode($data, true);  		  //json转php数组
+		var_dump($data);
+	 */
+	function curl_post_json($url='', $jsonStr=''){
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonStr);//用post方法传送参数
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+		'Content-Type:application/json;charset=utf-8',
+		'Content-Length: '.strlen($jsonStr)
+		)
+		);
+		$response = curl_exec($ch);
+		//echo curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		//echo curl_getinfo($ch, CURLINFO_HEADER_OUT);
+		curl_close($ch);
+		//var_dump($response);
+		return $response;
+	}
 
 	/**
 	 *求两个已知经纬度之间的距离,单位为米
