@@ -62,7 +62,7 @@ class GD{
 	 * @tutorial 设计：根据原图片类型,动态生成微缩图
 	 * @param array $config=array(
         	'image_name' 		=> 's_', 			//裁剪图片名称前缀
-	        'image_path' 		=> 'Public/', 		//裁剪后的保存目录,''未配置,为当前目录下,★若不存在目录,需要先手动创建目录
+	        'image_path' 		=> 'Public/', 		//裁剪后的保存目录,''未配置,为当前目录下,★若不存在目录,自动创建(若linux系统,请先将对应存放图片根目录授权)
 	        'image_width' 		=> 100, 			//裁剪图片-宽,单位px
 	        'image_height' 		=> 100, 			//裁剪图片-高,单位px
 	        'is_merge' 			=> false, 			//是否精确裁剪,默认false-不（按百分比缩放裁剪）  true-是
@@ -73,11 +73,16 @@ class GD{
 
 	 */
 	public function caijian($old_imgfile='',$new_imgName='',$config=array()){
-		ini_set('memory_limit',C('caijian.memory_limit'));   //将内存设置大些,避免大图不能裁剪 ini_set('memory_limit','512M'))		
+		if(isset($config['memory_limit'])){
+			ini_set('memory_limit', $config['memory_limit'] );   //将内存设置大些,避免大图不能裁剪 ini_set('memory_limit','512M'))
+		}else{
+			ini_set('memory_limit',C('caijian.memory_limit'));   //将内存设置大些,避免大图不能裁剪 ini_set('memory_limit','512M'))
+		}
 		$config = $config ? $config : C('caijian');
 		foreach ($config as $k=>$v){
 			$this->$k = $v;
 		}
+		
 		//获取图片后缀名
 		$r = self::check_imgtype($old_imgfile); if(is_string($r)) exit($r);
 		$r_k = $r[0];  $r_v = $r[1];
@@ -86,6 +91,9 @@ class GD{
 		$old_img = $r_k($old_imgfile);
 		$old_width = imagesx($old_img);
 		$old_height = imagesy($old_img);
+
+		//检查目录是否存在,不存在则创建
+		if(!is_dir($this->image_path)) mkdir($this->image_path,0755,true);
 		
 		//创建新图的宽，高
 		$new_width = $this->image_width;
@@ -95,7 +103,7 @@ class GD{
 		}else{
 			$new_height = ($new_width/$old_width)*$old_height;
 		}
-		
+
 		//命名
 		if( $new_imgName ){
 			$new_img_filename = $this->image_path.$new_imgName;    // xx/xx/xx/s_d72e016f310d7205cec6720b613f6f26.jpg, 根据$new_imgName传什么就拼接什么,包含图片后缀名 - berhp 2018.1.30
@@ -135,7 +143,7 @@ class GD{
 	 * @tutorial 设计：若没有传裁剪尺寸,尝试按品质压缩图片,若不能压缩的按处理前的图片返回路径;  详细查看php官方GD库
 	 * @param array $config=array(
 		 'image_name' 		=> 's_', 			//裁剪图片名称前缀
-		 'image_path' 		=> 'Public/', 		//裁剪后的保存目录,''未配置,为当前目录下,★若不存在目录,需要先手动创建目录
+		 'image_path' 		=> 'Public/', 		//裁剪后的保存目录,''未配置,为当前目录下,★若不存在目录,自动创建(若linux系统,请先将对应存放图片根目录授权)
 		 //'image_width' 	=> 100, 		    //裁剪图片-宽,单位px  --- 按品质压缩,暂时不支持尺寸控制(berhp 2018.5.16)
 		 //'image_height' 	=> 100, 			//裁剪图片-高,单位px  --- 按品质压缩,暂时不支持尺寸控制(berhp 2018.5.16)
 		 //'is_merge' 		=> false, 			//是否精确裁剪,默认false-不（按百分比缩放裁剪）  true-是
@@ -164,6 +172,10 @@ class GD{
 		//获取图片后缀名
 		$r = self::check_imgtype($old_imgfile); if(is_string($r)) exit($r);
 		$r_k = $r[0];  $r_v = $r[1];
+		
+		//检查目录是否存在,不存在则创建
+		if(!is_dir($this->image_path)) mkdir($this->image_path,0755,true);
+		
 		//命名
 		if( $new_imgName ){
 			$new_img_filename = $this->image_path.$new_imgName;    // xx/xx/xx/s_d72e016f310d7205cec6720b613f6f26.jpg, 根据$new_imgName传什么就拼接什么,包含图片后缀名 - berhp 2018.1.30
