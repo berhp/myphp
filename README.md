@@ -93,16 +93,7 @@ mkdir -p /home/www
 chown -R daemon:daemon /home/www/
 ```
 
-4.在浏览器中运行,如
-```
-   http://xx.xx.xx/yourPath/index.php   自动生成,目录"Application"(可在index.php中配置),运行成功会显示: "欢迎使用myphp:1.0.0"
-   
-   http://xx.xx.xx/yourPath/api.php     自动生成,目录"Api"(可在api.php中配置),运行成功会显示: "{"Welcome":"api demo","Version":"1.0.0","url":"http:\/\/localhost\/yourPath\/api.php\/Home\/v1\/Home\/Index\/index"}"
-   
-   http://xx.xx.xx/yourPath/admin.php   自动生成,目录"System"(可在admin.php中配置),运行成功会显示: "欢迎使用myphp:1.0.0"
-```
-
-5.若你使用的nginx,请将nginx.conf或your vhost/www.conf的server{}中的PHP解析配置如下:
+4.若你使用的nginx,请将nginx.conf或your vhost/yourxxsite.conf的server{}中的PHP解析配置如下:
 ```
 location ~ .+\.php($|/) {    
 	#root        /var/www/html/website;  #你的项目php源码目录,若与根目录一致,这里可屏蔽
@@ -118,6 +109,16 @@ location ~ .+\.php($|/) {
 	include        fastcgi.conf;
 }
 ```
+
+5.在浏览器中运行,如
+```
+   http://xx.xx.xx/yourPath/index.php   自动生成,目录"Application"(可在index.php中配置),运行成功会显示: "欢迎使用myphp:1.0.0"
+   
+   http://xx.xx.xx/yourPath/api.php     自动生成,目录"Api"(可在api.php中配置),运行成功会显示: "{"Welcome":"api demo","Version":"1.0.0","url":"http:\/\/localhost\/yourPath\/api.php\/Home\/v1\/Home\/Index\/index"}"
+   
+   http://xx.xx.xx/yourPath/admin.php   自动生成,目录"System"(可在admin.php中配置),运行成功会显示: "欢迎使用myphp:1.0.0"
+```
+
 
 ## 详细使用文档
 
