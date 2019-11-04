@@ -95,18 +95,30 @@ chown -R daemon:daemon /home/www/
 
 4.若你使用的nginx,请将nginx.conf或your vhost/yourxxsite.conf的server{}中的PHP解析配置如下:
 ```
-location ~ .+\.php($|/) {    
-	#root        /var/www/html/website;  #你的项目php源码目录,若与根目录一致,这里可屏蔽
-	fastcgi_pass   127.0.0.1:9000;
-	fastcgi_index  index.php;
-	
-	#设置PATH_INFO，注意fastcgi_split_path_info已经自动改写了fastcgi_script_name变量，
-	#后面不需要再改写SCRIPT_FILENAME,SCRIPT_NAME环境变量，所以必须在加载fastcgi.conf之前设置
+###
+# 这是nginx中,默认的php解析配置。
+# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+######
+#location ~ \.php$ {
+#    root           html;
+#    fastcgi_pass   127.0.0.1:9000;
+#    fastcgi_index  index.php;
+#    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+#    include        fastcgi_params;
+#}
+
+#★请修改为如下: 注意你的项目路径,实例:
+location ~ .+\.php($|/) {
+	#★★设置PHP的PATH_INFO环境变量★★:
 	fastcgi_split_path_info  ^(.+\.php)(/.*)$;
 	fastcgi_param  PATH_INFO $fastcgi_path_info;
-		
-	#加载Nginx默认"服务器环境变量"配置
-	include        fastcgi.conf;
+	
+	#其他-你项目的nginx配置,
+	#root          /home/www/zhuye;    #你的项目php源码目录,若与根目录一致,这里可屏蔽
+	fastcgi_pass   127.0.0.1:9000;
+	fastcgi_index  index.php;
+	fastcgi_param  SCRIPT_FILENAME  /home/www/zhuye/$fastcgi_script_name;  #注意对应你PHP脚本,网站的存放路径,如我的为/home/www/zhuye/
+	include        fastcgi_params;
 }
 ```
 
